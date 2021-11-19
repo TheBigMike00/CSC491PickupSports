@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+            xmlns:local ="clr-namespace:PickupSports.ViewModels"
+            mc:Ignorable="d"
+            x:Class="PickupSports.Views.LoginPage"
+            Shell.NavBarIsVisible="False"
+            BarBackgroundColor="Black"
+            BarTextColor="Orange">
+
+    <TabbedPage.BindingContext>
+        <local:LoginViewModel/>
+    </TabbedPage.BindingContext>
+
+    <ContentPage Title="Login" BackgroundImageSource="login_background.jpg">
+        <StackLayout Orientation="Vertical" Padding="10" VerticalOptions="Center">
+            <Entry x:Name="profileNameLoginEntry" Text="{Binding profileName}" TextColor="Orange" 
+                   PlaceholderColor="Orange" Placeholder="Profile Name"/>
+            <Entry x:Name="passwordLoginEntry" Text="{Binding password}" TextColor="Orange" IsPassword="True"
+                   PlaceholderColor="Orange" Placeholder="Password" />
+            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"
+                    BackgroundColor="Orange" TextColor="Black"/>
+        </StackLayout>
+    </ContentPage>
+
+
+    <ContentPage Title="Sign-Up" BackgroundImageSource="login_background.jpg">
+        <StackLayout Orientation="Vertical" Padding="10" >
+            <StackLayout Orientation="Vertical" Padding="10" VerticalOptions="StartAndExpand">
+                <Entry x:Name="firstNameSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="First Name"/>
+
+                <Entry x:Name="lastNameSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Last Name"/>
+
+                <Entry x:Name="ageSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Age"/>
+
+                <Entry x:Name="heightSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Height (in.)"/>
+
+                <Entry x:Name="weightSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Weight (lbs)"/>
+
+                <Entry x:Name="verticalSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Vertical (in.)"/>
+
+                <Entry x:Name="profileNameSignUpEntry" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Profile Name"/>
+
+                <Entry x:Name="passwordSignUpEntry" TextColor="Orange" IsPassword="True"
+                    PlaceholderColor="Orange" Placeholder="Password" />
+            </StackLayout>
+            <Button VerticalOptions="Center" Text="Create Account" Command="{Binding LoginCommand}"
+                BackgroundColor="Orange" TextColor="Black"/>
+        </StackLayout>
+    </ContentPage>
+</TabbedPage>

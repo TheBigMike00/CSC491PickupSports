@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:local ="clr-namespace:PickupSports.ViewModels"
+             x:Class="PickupSports.Views.HoopersPage"
+            BarBackgroundColor="#ffbf00"
+            BarTextColor="White">
+
+    <TabbedPage.BindingContext>
+        <local:HooperViewModel/>
+    </TabbedPage.BindingContext>
+
+    <TabbedPage.ToolbarItems>
+        <ToolbarItem Text="Basketball"/>
+        <ToolbarItem Text=""/>
+        <ToolbarItem Text=""/>
+        <ToolbarItem IconImageSource="tab_about.png"/>
+    </TabbedPage.ToolbarItems>
+
+    <ContentPage Title="Friends">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+
+            <StackLayout Orientation="Horizontal" Grid.Row="0" HorizontalOptions="CenterAndExpand">
+                <Label Text="Find Friend: " FontSize="14" TextColor="Black"
+                   HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
+                <Entry x:Name ="profileNameSearch" Placeholder="Enter Profile Name" TextColor="Gray"
+                   ClearButtonVisibility="WhileEditing" IsSpellCheckEnabled="False" Text="{Binding search}"
+                   HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+                <Button x:Name="profileNameSearchButton" Text="Search" BackgroundColor="Orange"
+                    HeightRequest="35" CornerRadius="10" Command="{Binding SearchCommand}"
+                    HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Vertical" Grid.Row="1">
+                <Label Text="{Binding numFriends}" FontSize="36" TextColor="Black" FontAttributes="Bold"
+                   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+                <Label Text="Friends" FontSize="18" TextColor="Black"
+                   HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal" Grid.Row="2" VerticalOptions="StartAndExpand">
+                <Image Source="tab_about.png" HeightRequest="30" WidthRequest="30"
+                   VerticalOptions="Center"  HorizontalOptions="Center" />
+                <Label Text="{Binding profileName}" FontSize="18" TextColor="Black"
+                   HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
+                <!--<Button x:Name="messageFriendButton" Text="Message" BackgroundColor="Orange"
+                    HeightRequest="35" CornerRadius="10"
+                    HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
+                <Button x:Name="removeFriendButton" Text="Remove" BackgroundColor="Red"
+                    HeightRequest="35" CornerRadius="10" Command="{Binding RemoveFriendCommand}"
+                    HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage>
+
+
+
+
+    <ContentPage Title="Teams">
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="AUTO"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <StackLayout Orientation="Horizontal" Grid.Row="0" Padding="5">
+                <Image Source ="tab_about.png"
+                   HeightRequest="75"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="CenterAndExpand"/>
+                <StackLayout Orientation="Vertical" WidthRequest="300" Padding="5">
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding teamName}" FontSize="18" TextColor="Black"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"/>
+                        <Label Text="{Binding members}" FontSize="18" TextColor="Black"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding record}" FontSize="18" TextColor="Black"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"/>
+                        <Label Text="Favorite Location" FontSize="18" TextColor="Black"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+                </StackLayout>
+            </StackLayout>
+
+
+
+            <StackLayout Orientation="Horizontal" Grid.Row="1">
+                <Button
+                x:Name = "editTeamDetails" Text = "Edit Team Details" BackgroundColor="Orange"
+                WidthRequest="250" HeightRequest="35" CornerRadius="10" Command="{Binding EditTeamDetails}"
+                VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+
+
+            <StackLayout Orientation="Vertical" Grid.Row="2" Padding="10">
+                <Label Text="Recent Games" FontSize="24" TextColor="Orange" FontAttributes="Bold"
+                       HorizontalOptions="CenterAndExpand"/>
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding timeDate}" FontSize="14" TextColor="Black"
+                       HorizontalOptions="EndAndExpand"
+                       VerticalOptions="CenterAndExpand"/>
+                    <Label Text="{Binding gameLocation}" FontSize="14" TextColor="Black"
+                       HorizontalOptions="StartAndExpand"
+                       VerticalOptions="CenterAndExpand"/>
+                </StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="50*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Orientation="Vertical" Grid.Column="0" HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding team1Name}" FontSize="18" TextColor="Black"
+                       HorizontalOptions="Center"
+                       VerticalOptions="CenterAndExpand"/>
+                        <Label Text="{Binding team1Score}" FontSize="48" TextColor="Black" FontAttributes="Bold"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+
+                    <StackLayout Orientation="Vertical" Grid.Column="1" HorizontalOptions="CenterAndExpand">
+                        <Label Text="{Binding team2Name}" FontSize="18" TextColor="Black"
+                       HorizontalOptions="Center"
+                       VerticalOptions="CenterAndExpand"/>
+                        <Label Text="{Binding team2Score}" FontSize="48" TextColor="Black" FontAttributes="Bold"
+                       HorizontalOptions="CenterAndExpand"
+                       VerticalOptions="CenterAndExpand"/>
+                    </StackLayout>
+
+                </Grid>
+                <Label Text="{Binding outcome}" FontSize="24" TextColor="Black"
+                       HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage>
+</TabbedPage>
