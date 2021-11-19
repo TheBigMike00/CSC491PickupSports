@@ -11,22 +11,41 @@ namespace PickupSports.ViewModels
     {
         public ProfileViewModel()
         {
-            //MSSQLSERVER
-            //LAPTOP-NS5R2J8I
-            //192.168.1.9 wifi
-            //192.168.56.1 lan
             try
             {
                 App.sqlcon.Open();
-                SqlDataAdapter sqlda = new SqlDataAdapter("Select * from Player", App.sqlcon);
+                SqlDataAdapter sqlda = new SqlDataAdapter("SELECT * FROM Player WHERE playerID=@playerID", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("playerID", App.playerID);
                 DataTable dtbl = new DataTable();
                 sqlda.Fill(dtbl);
-                profileName = dtbl.Rows[2]["profileName"].ToString();
-                name = dtbl.Rows[2]["firstName"].ToString() + "  " + dtbl.Rows[2]["lastName"].ToString();
-                age = Convert.ToInt32(dtbl.Rows[2]["age"].ToString());
-                height = convertInches(Convert.ToInt32(dtbl.Rows[2]["height"].ToString()));
-                weight = Convert.ToInt32(dtbl.Rows[2]["weight"].ToString());
-                vertical = Convert.ToInt32(dtbl.Rows[2]["vertical"].ToString());
+                profileName = dtbl.Rows[0]["profileName"].ToString();
+                name = dtbl.Rows[0]["firstName"].ToString() + "  " + dtbl.Rows[0]["lastName"].ToString();
+                age = Convert.ToInt32(dtbl.Rows[0]["age"].ToString());
+                height = convertInches(Convert.ToInt32(dtbl.Rows[0]["height"].ToString()));
+                weight = Convert.ToInt32(dtbl.Rows[0]["weight"].ToString());
+                vertical = Convert.ToInt32(dtbl.Rows[0]["vertical"].ToString());
+
+
+                string output = dtbl.Rows[0]["teamID"].ToString();
+                if (dtbl.Rows[0]["teamID"].ToString() == "")
+                    teamName = "No Team";
+                else
+                {
+                    sqlda = new SqlDataAdapter("SELECT teamName FROM Team WHERE teamID=@teamID", App.sqlcon);
+                    sqlda.SelectCommand.Parameters.AddWithValue("teamID", Guid.Parse(dtbl.Rows[0]["teamID"].ToString()));
+                    dtbl = new DataTable();
+                    sqlda.Fill(dtbl);
+                    teamName = dtbl.Rows[0]["teamName"].ToString();
+                }
+                
+
+                sqlda = new SqlDataAdapter("SELECT * FROM Friendship WHERE player1ID=@player1ID OR player2ID=@player2ID", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("player1ID", App.playerID);
+                sqlda.SelectCommand.Parameters.AddWithValue("player2ID", App.playerID);
+                dtbl = new DataTable();
+                sqlda.Fill(dtbl);
+                friends = dtbl.Rows.Count.ToString() + " Friends"; 
+
                 App.sqlcon.Close();
             }
             catch (Exception e)
@@ -36,20 +55,21 @@ namespace PickupSports.ViewModels
                     string err = e.InnerException.Message;
                 }
             }
-            
-
         }
 
-        string profileNameVal = "Test";
+        string profileNameVal;
         public string profileName { get => profileNameVal; set => SetProperty(ref profileNameVal, value); }
 
-        string nameVal = "Phil Collins";
+        string nameVal;
         public string name { get => nameVal; set => SetProperty(ref nameVal, value); }
 
-        string teamNameVal = "Ballers";
+        string teamNameVal;
         public string teamName { get => teamNameVal; set => SetProperty(ref teamNameVal, value); }
 
-        int ageVal = 23;
+        string friendsVal;
+        public string friends { get => friendsVal; set => SetProperty(ref friendsVal, value); }
+
+        int ageVal;
         public int age { get => ageVal; set => SetProperty(ref ageVal, value); }
 
         private string convertInches(int inches)
@@ -58,13 +78,13 @@ namespace PickupSports.ViewModels
             string inchesToReturn = (inches % 12).ToString();
             return feet + "'" + inchesToReturn + "\"";
         }
-        string heightVal = "6'3\"";
+        string heightVal;
         public string height { get => heightVal; set => SetProperty(ref heightVal, value); }
 
-        int weightVal = 230;
+        int weightVal;
         public int weight { get => weightVal; set => SetProperty(ref weightVal, value); }
 
-        int verticalVal = 17;
+        int verticalVal;
         public int vertical { get => verticalVal; set => SetProperty(ref verticalVal, value); }
 
     }

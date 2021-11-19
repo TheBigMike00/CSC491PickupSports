@@ -16,9 +16,9 @@
 
     <ContentPage Title="Login" BackgroundImageSource="login_background.jpg">
         <StackLayout Orientation="Vertical" Padding="10" VerticalOptions="Center">
-            <Entry x:Name="profileNameLoginEntry" Text="{Binding profileName}" TextColor="Orange" 
+            <Entry x:Name="profileNameLoginEntry" Text="{Binding profileNameLogin}" TextColor="Orange" 
                    PlaceholderColor="Orange" Placeholder="Profile Name"/>
-            <Entry x:Name="passwordLoginEntry" Text="{Binding password}" TextColor="Orange" IsPassword="True"
+            <Entry x:Name="passwordLoginEntry" Text="{Binding passwordLogin}" TextColor="Orange" IsPassword="True"
                    PlaceholderColor="Orange" Placeholder="Password" />
             <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"
                     BackgroundColor="Orange" TextColor="Black"/>
@@ -29,31 +29,31 @@
     <ContentPage Title="Sign-Up" BackgroundImageSource="login_background.jpg">
         <StackLayout Orientation="Vertical" Padding="10" >
             <StackLayout Orientation="Vertical" Padding="10" VerticalOptions="StartAndExpand">
-                <Entry x:Name="firstNameSignUpEntry" TextColor="Orange" 
-                    PlaceholderColor="Orange" Placeholder="First Name"/>
-
-                <Entry x:Name="lastNameSignUpEntry" TextColor="Orange" 
-                    PlaceholderColor="Orange" Placeholder="Last Name"/>
-
-                <Entry x:Name="ageSignUpEntry" TextColor="Orange" 
-                    PlaceholderColor="Orange" Placeholder="Age"/>
-
-                <Entry x:Name="heightSignUpEntry" TextColor="Orange" 
-                    PlaceholderColor="Orange" Placeholder="Height (in.)"/>
-
-                <Entry x:Name="weightSignUpEntry" TextColor="Orange" 
-                    PlaceholderColor="Orange" Placeholder="Weight (lbs)"/>
-
-                <Entry x:Name="verticalSignUpEntry" TextColor="Orange" 
-                    PlaceholderColor="Orange" Placeholder="Vertical (in.)"/>
-
-                <Entry x:Name="profileNameSignUpEntry" TextColor="Orange" 
+                <Entry x:Name="profileNameSignUpEntry" Text="{Binding profileName}" TextColor="Orange" 
                     PlaceholderColor="Orange" Placeholder="Profile Name"/>
 
-                <Entry x:Name="passwordSignUpEntry" TextColor="Orange" IsPassword="True"
+                <Entry x:Name="passwordSignUpEntry" Text="{Binding password}" TextColor="Orange" IsPassword="True"
                     PlaceholderColor="Orange" Placeholder="Password" />
+                
+                <Entry x:Name="firstNameSignUpEntry" Text="{Binding firstName}" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="First Name"/>
+
+                <Entry x:Name="lastNameSignUpEntry" Text="{Binding lastName}" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Last Name"/>
+
+                <Entry x:Name="ageSignUpEntry" Text="{Binding age}" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Age"/>
+
+                <Entry x:Name="heightSignUpEntry" Text="{Binding height}" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Height (in.)"/>
+
+                <Entry x:Name="weightSignUpEntry" Text="{Binding weight}" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Weight (lbs)"/>
+
+                <Entry x:Name="verticalSignUpEntry" Text="{Binding vertical}" TextColor="Orange" 
+                    PlaceholderColor="Orange" Placeholder="Vertical (in.)"/>
             </StackLayout>
-            <Button VerticalOptions="Center" Text="Create Account" Command="{Binding LoginCommand}"
+            <Button VerticalOptions="Center" Text="Create Account" Command="{Binding CreateAccountCommand}"
                 BackgroundColor="Orange" TextColor="Black"/>
         </StackLayout>
     </ContentPage>

@@ -9,8 +9,8 @@ namespace PickupSports
 {
     public partial class App : Application
     {
-        public static Guid playerID;
-        //public static Guid playerID = Guid.Parse("AAAAAAAA-BBB1-CCCC-DDDD-EEEEEEEEEEEE");
+        //public static Guid playerID;
+        public static Guid playerID = Guid.Parse("AAAAAAA3-BBBB-CCCC-DDDD-EEEEEEEEEEEE");
         public static SqlConnection sqlcon = new SqlConnection("Data Source=LAPTOP-NS5R2J8I;Initial Catalog=PickupSportsDB;User Id=mbrocker;Password=mbrocker;");
         
 

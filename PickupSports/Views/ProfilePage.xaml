@@ -43,7 +43,7 @@
                     <Label Text="{Binding teamName}" FontSize="18" TextColor="Black"
                            HorizontalOptions="CenterAndExpand"
                            VerticalOptions="CenterAndExpand"/>
-                    <Label Text="Friends" FontSize="18" TextColor="Black"
+                    <Label Text="{Binding friends}" FontSize="18" TextColor="Black"
                            HorizontalOptions="CenterAndExpand"
                            VerticalOptions="CenterAndExpand"/>
                 </StackLayout>
