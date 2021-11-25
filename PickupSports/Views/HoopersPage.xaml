@@ -45,6 +45,35 @@
                    HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
 
+
+            <!--<RefreshView x:DataType="local:HooperViewModel" CommandParameter="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
+                <CollectionView x:Name="ItemsListView"
+                ItemsSource="{Binding Items}"
+                SelectionMode="None">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <StackLayout Padding="10" x:DataType="model:Item">
+                                <Label Text="{Binding Text}" 
+                            LineBreakMode="NoWrap" 
+                            Style="{DynamicResource ListItemTextStyle}" 
+                            FontSize="16" />
+                                <Label Text="{Binding Description}" 
+                            LineBreakMode="NoWrap"
+                            Style="{DynamicResource ListItemDetailTextStyle}"
+                            FontSize="13" />
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer 
+                                NumberOfTapsRequired="1"
+                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
+                                CommandParameter="{Binding .}">
+                                    </TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </RefreshView>-->
+
             <StackLayout Orientation="Horizontal" Grid.Row="2" VerticalOptions="StartAndExpand">
                 <Image Source="tab_about.png" HeightRequest="30" WidthRequest="30"
                    VerticalOptions="Center"  HorizontalOptions="Center" />
@@ -57,6 +86,10 @@
                     HeightRequest="35" CornerRadius="10" Command="{Binding RemoveFriendCommand}"
                     HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
+            
+            
+            
+            
         </Grid>
     </ContentPage>
 
