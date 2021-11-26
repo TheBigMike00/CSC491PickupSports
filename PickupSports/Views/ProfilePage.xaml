@@ -73,7 +73,7 @@
                 <Label Text="{Binding height}" TextColor="Black" FontSize="20"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
-                <Label Text="Height" TextColor="Orange" FontSize="12" FontAttributes="Bold"
+                <Label Text="Height (in.)" TextColor="Orange" FontSize="12" FontAttributes="Bold"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
             </StackLayout>

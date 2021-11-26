@@ -16,7 +16,7 @@
     </ContentPage.ToolbarItems>
 
     <!--Posts-->
-    <ListView ItemsSource="{Binding postFeed}" HasUnevenRows="true" BackgroundColor="#f0fff0">
+    <ListView ItemsSource="{Binding postFeed}" HasUnevenRows="true" BackgroundColor="#f0fff0" SelectionMode="None">
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>

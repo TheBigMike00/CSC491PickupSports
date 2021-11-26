@@ -17,7 +17,7 @@
         <ToolbarItem IconImageSource="tab_about.png"/>
     </TabbedPage.ToolbarItems>
 
-    <ContentPage Title="Friends">
+    <ContentPage Title="Friends" BackgroundColor="#f0fff0">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -45,50 +45,26 @@
                    HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
 
-
-            <!--<RefreshView x:DataType="local:HooperViewModel" CommandParameter="{Binding LoadItemsCommand}" IsRefreshing="{Binding IsBusy, Mode=TwoWay}">
-                <CollectionView x:Name="ItemsListView"
-                ItemsSource="{Binding Items}"
-                SelectionMode="None">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <StackLayout Padding="10" x:DataType="model:Item">
-                                <Label Text="{Binding Text}" 
-                            LineBreakMode="NoWrap" 
-                            Style="{DynamicResource ListItemTextStyle}" 
-                            FontSize="16" />
-                                <Label Text="{Binding Description}" 
-                            LineBreakMode="NoWrap"
-                            Style="{DynamicResource ListItemDetailTextStyle}"
-                            FontSize="13" />
-                                <StackLayout.GestureRecognizers>
-                                    <TapGestureRecognizer 
-                                NumberOfTapsRequired="1"
-                                Command="{Binding Source={RelativeSource AncestorType={x:Type local:ItemsViewModel}}, Path=ItemTapped}"		
-                                CommandParameter="{Binding .}">
-                                    </TapGestureRecognizer>
-                                </StackLayout.GestureRecognizers>
+            <ListView ItemsSource="{Binding friendList}" HasUnevenRows="true" Grid.Row="2">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal" VerticalOptions="StartAndExpand">
+                                <Image Source="{Binding profilePic}" HeightRequest="30" WidthRequest="30"
+                                        VerticalOptions="Center"  HorizontalOptions="Center" />
+                                <Label Text="{Binding profileName}" FontSize="18" TextColor="Black"
+                                        HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
+                                <!--<Button x:Name="messageFriendButton" Text="Message" BackgroundColor="Orange"
+                                        HeightRequest="35" CornerRadius="10"
+                                        HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
+                                <Button x:Name="removeFriendButton" Text="Remove" BackgroundColor="Red"
+                                        HeightRequest="35" CornerRadius="10" Command="{Binding RemoveFriendCommand}"
+                                        HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
                             </StackLayout>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
-            </RefreshView>-->
-
-            <StackLayout Orientation="Horizontal" Grid.Row="2" VerticalOptions="StartAndExpand">
-                <Image Source="tab_about.png" HeightRequest="30" WidthRequest="30"
-                   VerticalOptions="Center"  HorizontalOptions="Center" />
-                <Label Text="{Binding profileName}" FontSize="18" TextColor="Black"
-                   HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
-                <!--<Button x:Name="messageFriendButton" Text="Message" BackgroundColor="Orange"
-                    HeightRequest="35" CornerRadius="10"
-                    HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
-                <Button x:Name="removeFriendButton" Text="Remove" BackgroundColor="Red"
-                    HeightRequest="35" CornerRadius="10" Command="{Binding RemoveFriendCommand}"
-                    HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
-            </StackLayout>
-            
-            
-            
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
             
         </Grid>
     </ContentPage>
@@ -96,7 +72,7 @@
 
 
 
-    <ContentPage Title="Teams">
+    <ContentPage Title="Teams" BackgroundColor="#f0fff0">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -132,54 +108,64 @@
 
 
 
-            <StackLayout Orientation="Horizontal" Grid.Row="1">
+            <StackLayout Orientation="Vertical" Grid.Row="1">
                 <Button
                 x:Name = "editTeamDetails" Text = "Edit Team Details" BackgroundColor="Orange"
                 WidthRequest="250" HeightRequest="35" CornerRadius="10" Command="{Binding EditTeamDetails}"
                 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                <Label Padding="10" Text="Recent Games" FontSize="24" TextColor="Orange" FontAttributes="Bold"
+                                    HorizontalOptions="CenterAndExpand"/>
             </StackLayout>
 
 
 
-            <StackLayout Orientation="Vertical" Grid.Row="2" Padding="10">
-                <Label Text="Recent Games" FontSize="24" TextColor="Orange" FontAttributes="Bold"
-                       HorizontalOptions="CenterAndExpand"/>
-                <StackLayout Orientation="Horizontal">
-                    <Label Text="{Binding timeDate}" FontSize="14" TextColor="Black"
-                       HorizontalOptions="EndAndExpand"
-                       VerticalOptions="CenterAndExpand"/>
-                    <Label Text="{Binding gameLocation}" FontSize="14" TextColor="Black"
-                       HorizontalOptions="StartAndExpand"
-                       VerticalOptions="CenterAndExpand"/>
-                </StackLayout>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*"/>
-                        <ColumnDefinition Width="50*"/>
-                    </Grid.ColumnDefinitions>
 
-                    <StackLayout Orientation="Vertical" Grid.Column="0" HorizontalOptions="CenterAndExpand">
-                        <Label Text="{Binding team1Name}" FontSize="18" TextColor="Black"
-                       HorizontalOptions="Center"
-                       VerticalOptions="CenterAndExpand"/>
-                        <Label Text="{Binding team1Score}" FontSize="48" TextColor="Black" FontAttributes="Bold"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"/>
-                    </StackLayout>
+            <ListView ItemsSource="{Binding game}" HasUnevenRows="true" Grid.Row="2">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Vertical" Grid.Row="2" Padding="10">
+                                <Label Text="{Binding outcome}" FontSize="24" TextColor="Black"
+                                    HorizontalOptions="CenterAndExpand"/>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding timeDate}" FontSize="14" TextColor="Black"
+                                       HorizontalOptions="EndAndExpand"
+                                       VerticalOptions="CenterAndExpand"/>
+                                    <Label Text="{Binding gameLocation}" FontSize="14" TextColor="Black"
+                                       HorizontalOptions="CenterAndExpand"
+                                       VerticalOptions="CenterAndExpand"/>
+                                </StackLayout>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="50*"/>
+                                        <ColumnDefinition Width="50*"/>
+                                    </Grid.ColumnDefinitions>
 
-                    <StackLayout Orientation="Vertical" Grid.Column="1" HorizontalOptions="CenterAndExpand">
-                        <Label Text="{Binding team2Name}" FontSize="18" TextColor="Black"
-                       HorizontalOptions="Center"
-                       VerticalOptions="CenterAndExpand"/>
-                        <Label Text="{Binding team2Score}" FontSize="48" TextColor="Black" FontAttributes="Bold"
-                       HorizontalOptions="CenterAndExpand"
-                       VerticalOptions="CenterAndExpand"/>
-                    </StackLayout>
+                                    <StackLayout Orientation="Vertical" Grid.Column="0" HorizontalOptions="CenterAndExpand">
+                                        <Label Text="{Binding team1Name}" FontSize="18" TextColor="Black"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="CenterAndExpand"/>
+                                        <Label Text="{Binding team1Score}" FontSize="48" TextColor="Black" FontAttributes="Bold"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"/>
+                                    </StackLayout>
 
-                </Grid>
-                <Label Text="{Binding outcome}" FontSize="24" TextColor="Black"
-                       HorizontalOptions="CenterAndExpand"/>
-            </StackLayout>
+                                    <StackLayout Orientation="Vertical" Grid.Column="1" HorizontalOptions="CenterAndExpand">
+                                        <Label Text="{Binding team2Name}" FontSize="18" TextColor="Black"
+                                           HorizontalOptions="Center"
+                                           VerticalOptions="CenterAndExpand"/>
+                                        <Label Text="{Binding team2Score}" FontSize="48" TextColor="Black" FontAttributes="Bold"
+                                           HorizontalOptions="CenterAndExpand"
+                                           VerticalOptions="CenterAndExpand"/>
+                                    </StackLayout>
+
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
         </Grid>
     </ContentPage>
 </TabbedPage>
