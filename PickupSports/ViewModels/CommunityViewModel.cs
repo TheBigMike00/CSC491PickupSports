@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Text;
 using PickupSports.Models;
 using PickupSports.Views;
@@ -11,24 +13,30 @@ namespace PickupSports.ViewModels
     {
         public CommunityViewModel()
         {
-            postFeed = new List<CommunityFeed>()
-            {
-                new CommunityFeed()
-                {
-                    profileNameVal = "profileName5",
-                    imageSourceVal = "StockBasketballPhoto1.jpg",
-                    commentVal = "This is a comment lol",
-                    postDateVal = DateTime.Now.ToString()
-                }
-            };
+            postFeed = new List<CommunityFeed>();
 
-            postFeed.Add(new CommunityFeed()
+            if (App.sqlcon.State == ConnectionState.Closed)
+                App.sqlcon.Open();
+            SqlDataAdapter sqlda = new SqlDataAdapter("SELECT * FROM Post ORDER BY createdTime DESC", App.sqlcon);
+            DataTable dtbl = new DataTable();
+            sqlda.Fill(dtbl);
+            for (int i = 0; i < dtbl.Rows.Count; i++)
             {
-                profileNameVal = "AWEsauce",
-                imageSourceVal = "StockBasketballPhoto2.jpg",
-                commentVal = "Another Comment",
-                postDateVal = DateTime.Now.ToString()
-            });
+                sqlda = new SqlDataAdapter("SELECT profilePic, profileName FROM Player WHERE playerID=@playerID", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("playerID", dtbl.Rows[i]["playerID"].ToString());
+                DataTable dtbl2 = new DataTable();
+                sqlda.Fill(dtbl2);
+
+                postFeed.Add(new CommunityFeed()
+                {
+                    profilePicVal = dtbl2.Rows[0]["profilePic"].ToString(),
+                    profileNameVal = dtbl2.Rows[0]["profileName"].ToString(),
+                    imageSourceVal = dtbl.Rows[i]["source"].ToString(),
+                    captionVal = dtbl.Rows[i]["caption"].ToString(),
+                    postDateVal = dtbl.Rows[i]["createdTime"].ToString()
+                });
+            }
+            App.sqlcon.Close();
         }
 
         public List<CommunityFeed> postFeed { get; set; }

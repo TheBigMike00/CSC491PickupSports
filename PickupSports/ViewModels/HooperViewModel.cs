@@ -17,7 +17,8 @@ namespace PickupSports.ViewModels
         {
             friendNames = new ObservableCollection<string>();
             //Load Data for Friends Page
-            App.sqlcon.Open();
+            if (App.sqlcon.State == ConnectionState.Closed)
+                App.sqlcon.Open();
             SqlDataAdapter sqlda = new SqlDataAdapter("SELECT player1ID, player2ID FROM Friendship WHERE player1ID=@player1ID OR player2ID=@player2ID", App.sqlcon);
             sqlda.SelectCommand.Parameters.AddWithValue("player1ID", App.playerID);
             sqlda.SelectCommand.Parameters.AddWithValue("player2ID", App.playerID);

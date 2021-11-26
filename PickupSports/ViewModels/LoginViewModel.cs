@@ -23,7 +23,8 @@ namespace PickupSports.ViewModels
         {
             try 
             {
-                App.sqlcon.Open();
+                if (App.sqlcon.State == ConnectionState.Closed)
+                    App.sqlcon.Open();
                 App.playerID = Guid.NewGuid();
                 var sqlda = new SqlCommand("INSERT INTO Player (playerID, profileName, password, firstName, lastName, age, height, weight, vertical) VALUES (@playerID, @profileName, @password, @firstName, @lastName, @age, @height, @weight, @vertical)", App.sqlcon);
                 sqlda.Parameters.AddWithValue("playerID", App.playerID);

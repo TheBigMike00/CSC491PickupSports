@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:PickupSports.ViewModels"
-             x:Class="PickupSports.Views.ProfilePage">
+             x:Class="PickupSports.Views.ProfilePage"
+             BackgroundColor="#f0fff0">
 
     <ContentPage.BindingContext>
         <local:ProfileViewModel/>
@@ -20,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="AUTO"/>
             <RowDefinition Height="AUTO"/>
-            <RowDefinition Height="AUTO"/>
+            <!--<RowDefinition Height="AUTO"/>-->
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -30,8 +31,8 @@
                 <Label Text="{Binding profileName}" FontSize="14" TextColor="Black"
                        HorizontalOptions="CenterAndExpand"
                        VerticalOptions="Center"/>
-                <Image Source ="tab_about.png"
-                   HeightRequest="75"
+                <Image Source ="{Binding profilePic}"
+                   HeightRequest="75" WidthRequest="75"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"/>
             </StackLayout>
@@ -97,7 +98,7 @@
         </Grid>
         
         <!--Favorite Locations-->
-        <StackLayout Orientation="Vertical" Grid.Row="2">
+        <!--<StackLayout Orientation="Vertical" Grid.Row="2">
             <StackLayout Orientation="Horizontal">
                 <Image Source ="tab_about.png"
                    HeightRequest="75"
@@ -115,43 +116,28 @@
             <Label Text="Favorite Locations" TextColor="Orange" FontSize="14" FontAttributes="Bold"
                    VerticalTextAlignment="Center"
                    HorizontalTextAlignment="Center"/>
-        </StackLayout>
+        </StackLayout>-->
         
         <!--Posts-->
-        <!--ItemsSource="Null"-->
-        <ListView HasUnevenRows="True" Grid.Row="3">
+        <ListView ItemsSource="{Binding profileFeed}" Grid.Row="2" HasUnevenRows="true" BackgroundColor="#f0fff0" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid>
+                        <Grid Margin="0,0,0,30">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="70" />
-                                <RowDefinition Height="200" />
-                                <RowDefinition Height="50" />
-                                <RowDefinition Height="20" />
+                                <RowDefinition Height="35" />
+                                <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-
                             <StackLayout Orientation="Horizontal" Margin="10,0,10,0" Spacing="5">
-                                <Image VerticalOptions="Center" HeightRequest="30" WidthRequest="30" Source="tab_about.png" HorizontalOptions="Center" />
-                                <Label Text="Profile Name" VerticalOptions="Center" TextColor="Black" />
+                                <Image VerticalOptions="Center" HeightRequest="30" WidthRequest="30" Source="{Binding profilePicVal}" Aspect="AspectFill" HorizontalOptions="Center" />
+                                <Label Text="{Binding profileNameVal}" VerticalOptions="Center" TextColor="Black" />
                             </StackLayout>
-                            <Image Source="tab_about.png" Grid.Row="1" Aspect="AspectFill" HeightRequest="150" />
-                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" Grid.Row="2" Margin="10,0,10,0">
-                                <Image Source="heart2.png" />
-                                <Image Source="chat.png" />
-                                <Image Source="sent.png" />
-                                <Image Source="bookmark.png" HorizontalOptions="EndAndExpand" />
-                            </StackLayout>
-                            <StackLayout Orientation="Horizontal" Grid.Row="3" Margin="10,0,10,0">
-                                <Image Source="tab_about.png" />
-                                <Label Text="5 views" FontSize="12" TextColor="Black" />
-                            </StackLayout>
-                            <Label Text="Comment" Grid.Row="4" TextColor="Black" Margin="10,0,10,0"/>
-                            <Label Text="# of Comments" Grid.Row="5" Margin="10,0,10,0" />
-                            <Label Text="Posted At" Grid.Row="6" Margin="10,0,10,0" />
+                            <Image Source="{Binding imageSourceVal}" Grid.Row="1" Aspect="AspectFill"/>
+                            <Label Text="{Binding captionVal}" Grid.Row="2" VerticalOptions="Start" TextColor="Black" Margin="10,0,10,0"/>
+                            <Label Text="{Binding postDateVal}" Grid.Row="3" Margin="10,0,10,0" />
                         </Grid>
                     </ViewCell>
                 </DataTemplate>

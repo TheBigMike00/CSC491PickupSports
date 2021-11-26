@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PickupSports.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,11 +14,13 @@ namespace PickupSports.ViewModels
         {
             try
             {
-                App.sqlcon.Open();
+                if(App.sqlcon.State == ConnectionState.Closed)
+                    App.sqlcon.Open();
                 SqlDataAdapter sqlda = new SqlDataAdapter("SELECT * FROM Player WHERE playerID=@playerID", App.sqlcon);
                 sqlda.SelectCommand.Parameters.AddWithValue("playerID", App.playerID);
                 DataTable dtbl = new DataTable();
                 sqlda.Fill(dtbl);
+                profilePic = dtbl.Rows[0]["profilePic"].ToString();
                 profileName = dtbl.Rows[0]["profileName"].ToString();
                 name = dtbl.Rows[0]["firstName"].ToString() + "  " + dtbl.Rows[0]["lastName"].ToString();
                 age = Convert.ToInt32(dtbl.Rows[0]["age"].ToString());
@@ -44,7 +47,26 @@ namespace PickupSports.ViewModels
                 sqlda.SelectCommand.Parameters.AddWithValue("player2ID", App.playerID);
                 dtbl = new DataTable();
                 sqlda.Fill(dtbl);
-                friends = dtbl.Rows.Count.ToString() + " Friends"; 
+                friends = dtbl.Rows.Count.ToString() + " Friends";
+
+
+                profileFeed = new List<CommunityFeed>();
+                sqlda = new SqlDataAdapter("SELECT * FROM Post WHERE playerID=@playerID ORDER BY createdTime DESC", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("playerID", App.playerID);
+                dtbl = new DataTable();
+                sqlda.Fill(dtbl);
+                for (int i = 0; i < dtbl.Rows.Count; i++)
+                {
+                    profileFeed.Add(new CommunityFeed()
+                    {
+                        profilePicVal = profilePic,
+                        profileNameVal = profileName,
+                        imageSourceVal = dtbl.Rows[i]["source"].ToString(),
+                        captionVal = dtbl.Rows[i]["caption"].ToString(),
+                        postDateVal = dtbl.Rows[i]["createdTime"].ToString()
+                    });
+                }
+
 
                 App.sqlcon.Close();
             }
@@ -56,6 +78,11 @@ namespace PickupSports.ViewModels
                 }
             }
         }
+
+        public List<CommunityFeed> profileFeed { get; set; }
+
+        string profilePicVal;
+        public string profilePic { get => profilePicVal; set => SetProperty(ref profilePicVal, value); }
 
         string profileNameVal;
         public string profileName { get => profileNameVal; set => SetProperty(ref profileNameVal, value); }

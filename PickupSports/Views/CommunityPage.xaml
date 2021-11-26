@@ -29,11 +29,11 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <StackLayout Orientation="Horizontal" Margin="10,0,10,0" Spacing="5">
-                            <Image VerticalOptions="Center" HeightRequest="30" WidthRequest="30" Source="tab_about.png" HorizontalOptions="Center" />
+                            <Image VerticalOptions="Center" HeightRequest="30" WidthRequest="30" Source="{Binding profilePicVal}" Aspect="AspectFill" HorizontalOptions="Center" />
                             <Label Text="{Binding profileNameVal}" VerticalOptions="Center" TextColor="Black" />
                         </StackLayout>
-                        <Image Source="{Binding imageSourceVal}" Grid.Row="1" Aspect="AspectFill" />
-                        <Label Text="{Binding commentVal}" Grid.Row="2" TextColor="Black" Margin="10,0,10,0"/>
+                        <Image Source="{Binding imageSourceVal}" Grid.Row="1" Aspect="AspectFill"/>
+                        <Label Text="{Binding captionVal}" Grid.Row="2" VerticalOptions="Start" TextColor="Black" Margin="10,0,10,0"/>
                         <Label Text="{Binding postDateVal}" Grid.Row="3" Margin="10,0,10,0" />
                     </Grid>
                 </ViewCell>
