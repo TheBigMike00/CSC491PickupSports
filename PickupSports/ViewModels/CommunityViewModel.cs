@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Threading.Tasks;
 using PickupSports.Models;
 using PickupSports.Views;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 
 namespace PickupSports.ViewModels
@@ -37,8 +39,69 @@ namespace PickupSports.ViewModels
                 });
             }
             App.sqlcon.Close();
+            try
+            {
+                ViewProfile = new AsyncCommand<object>(ViewProfileComm);
+            }
+            catch (Exception e)
+            {
+                string error = e.ToString();
+            }
+            
+        }
+
+        async Task ViewProfileComm(object args)
+        {
+            try
+            {
+                string output = args.ToString();
+                SelectedPost = args as CommunityFeed;
+                if (App.sqlcon.State == ConnectionState.Closed)
+                    App.sqlcon.Open();
+
+                SqlDataAdapter sqlda = new SqlDataAdapter("SELECT playerID FROM Player WHERE profileName=@profileName", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("profileName", SelectedPost.profileNameVal);
+                DataTable dtbl = new DataTable();
+                sqlda.Fill(dtbl);
+                App.tempPlayerID = Guid.Parse(dtbl.Rows[0]["playerID"].ToString());
+                App.sqlcon.Close();
+                SelectedPost = null;
+
+                var viewProfileVM = new ViewProfileViewModel();
+                var viewProfilePage = new ViewProfilePage();
+
+                viewProfilePage.BindingContext = viewProfileVM;
+                await App.Current.MainPage.Navigation.PushModalAsync(viewProfilePage);
+            }
+            catch (Exception e)
+            {
+                string error = e.ToString();
+            }
+
+            return;
+            //var commFeed = args as CommunityFeed;
+            //if (App.sqlcon.State == ConnectionState.Closed)
+            //    App.sqlcon.Open();
+
+            //SqlDataAdapter sqlda = new SqlDataAdapter("SELECT playerID FROM Player WHERE playerName=@playerName", App.sqlcon);
+            //sqlda.SelectCommand.Parameters.AddWithValue("playerName", commFeed.profileNameVal);
+            //DataTable dtbl = new DataTable();
+            //sqlda.Fill(dtbl);
+            //App.tempPlayerID = Guid.Parse(dtbl.Rows[0]["playerID"].ToString());
+            //App.sqlcon.Close();
+
+            //var viewProfileVM = new ViewProfileViewModel();
+            //var viewProfilePage = new ViewProfilePage();
+
+            //viewProfilePage.BindingContext = viewProfileVM;
+            //await App.Current.MainPage.Navigation.PushModalAsync(viewProfilePage);
         }
 
         public List<CommunityFeed> postFeed { get; set; }
+
+        CommunityFeed selectedPostVal;
+        public CommunityFeed SelectedPost { get => selectedPostVal; set => SetProperty(ref selectedPostVal, value); }
+
+        public AsyncCommand <object>ViewProfile { get; }
     }
 }

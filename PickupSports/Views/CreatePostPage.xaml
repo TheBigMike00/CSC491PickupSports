@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PickupSports.Views.CreatePostPage"
+             xmlns:local ="clr-namespace:PickupSports.ViewModels"
+             BackgroundColor="#f0fff0">
+
+    <ContentPage.BindingContext>
+        <local:CreatePostViewModel/>
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Orientation="Vertical">
+            <Label Text="CREATE POST" TextColor="Orange" FontSize="30" FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"/>
+            <!--<Button Text="Choose File" WidthRequest="300" HeightRequest="40" Clicked="chooseFileClicked"
+                    HorizontalOptions="Center" Margin="10,10,10,10" CornerRadius="10"/>-->
+            <Button Text="Choose File" WidthRequest="300" HeightRequest="40" Command="{Binding ChooseFile}"
+                    HorizontalOptions="Center" Margin="10,10,10,10" CornerRadius="10"/>
+            <Image Source="{Binding image}" Aspect="AspectFill"/>
+            <Entry Placeholder="Enter Caption Here..." VerticalOptions="CenterAndExpand" TextColor="Orange" PlaceholderColor="Orange"
+                   Margin="10,0,10,0" IsSpellCheckEnabled="True" BackgroundColor="#f0fff0"/>
+            <Button Text="UPLOAD" Command="{Binding UploadPost}" CornerRadius="10"
+                    Margin="30,0,30,0" VerticalOptions="StartAndExpand" BackgroundColor="Orange"/>
+            <Button Text="CANCEL" Command="{Binding Cancel}" CornerRadius="10" HeightRequest="30" Padding="0"
+                    Margin="30,30,30,30" VerticalOptions="EndAndExpand" BackgroundColor="Red"/>
+        </StackLayout>
+    </ContentPage.Content>
+    
+</ContentPage>

@@ -1,12 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="PickupSports.Views.CommunityPage"
              xmlns:local ="clr-namespace:PickupSports.ViewModels">
 
     <ContentPage.BindingContext>
         <local:CommunityViewModel/>
     </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemSelectedEventArgsConverter x:Key="ItemSelectedEventArgsConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Basketball"/>
@@ -16,7 +23,13 @@
     </ContentPage.ToolbarItems>
 
     <!--Posts-->
-    <ListView ItemsSource="{Binding postFeed}" HasUnevenRows="true" BackgroundColor="#f0fff0" SelectionMode="None">
+    <ListView ItemsSource="{Binding postFeed}" HasUnevenRows="true" BackgroundColor="#f0fff0" SelectedItem="{Binding SelectedPost, Mode=TwoWay}">
+        <ListView.Behaviors>
+            <xct:EventToCommandBehavior
+                EventName="ItemSelected"
+                Command="{Binding ViewProfile}"
+                CommandParameter="{Binding SelectedPost}"/>
+        </ListView.Behaviors>
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
@@ -29,7 +42,12 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
                         <StackLayout Orientation="Horizontal" Margin="10,0,10,0" Spacing="5">
-                            <Image VerticalOptions="Center" HeightRequest="30" WidthRequest="30" Source="{Binding profilePicVal}" Aspect="AspectFill" HorizontalOptions="Center" />
+                            <Image VerticalOptions="Center" HeightRequest="30" WidthRequest="30" Source="{Binding profilePicVal}" Aspect="AspectFill" HorizontalOptions="Center">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding ViewProfile}"
+                                                          CommandParameter="{Binding profileNameVal}" />
+                                </Image.GestureRecognizers>
+                            </Image>
                             <Label Text="{Binding profileNameVal}" VerticalOptions="Center" TextColor="Black" />
                         </StackLayout>
                         <Image Source="{Binding imageSourceVal}" Grid.Row="1" Aspect="AspectFill"/>

@@ -7,9 +7,9 @@
 
     <ContentPage.BindingContext>
         <local:ProfileViewModel/>
-    </ContentPage.BindingContext>     
-       
-    
+    </ContentPage.BindingContext>
+
+
     <ContentPage.ToolbarItems>
         <ToolbarItem Text="Basketball"/>
         <ToolbarItem Text=""/>
@@ -21,7 +21,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="AUTO"/>
             <RowDefinition Height="AUTO"/>
-            <!--<RowDefinition Height="AUTO"/>-->
+            <RowDefinition Height="AUTO"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -61,7 +61,7 @@
             </Grid.ColumnDefinitions>
 
             <StackLayout Grid.Column="0">
-                <Label Text="{Binding age}" TextColor="Black" FontSize="20"
+                <Label Text="{Binding profile.age}" TextColor="Black" FontSize="20"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
                 <Label Text="Age" TextColor="Orange" FontSize="12" FontAttributes="Bold"
@@ -70,7 +70,7 @@
             </StackLayout>
 
             <StackLayout Grid.Column="1">
-                <Label Text="{Binding height}" TextColor="Black" FontSize="20"
+                <Label Text="{Binding profile.displayableHeight}" TextColor="Black" FontSize="20"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
                 <Label Text="Height (in.)" TextColor="Orange" FontSize="12" FontAttributes="Bold"
@@ -79,7 +79,7 @@
             </StackLayout>
 
             <StackLayout Grid.Column="2">
-                <Label Text="{Binding weight}" TextColor="Black" FontSize="20"
+                <Label Text="{Binding profile.weight}" TextColor="Black" FontSize="20"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
                 <Label Text="Weight (lbs)" TextColor="Orange" FontSize="12" FontAttributes="Bold"
@@ -88,7 +88,7 @@
             </StackLayout>
 
             <StackLayout Grid.Column="3">
-                <Label Text="{Binding vertical}" TextColor="Black" FontSize="20"
+                <Label Text="{Binding profile.vertical}" TextColor="Black" FontSize="20"
                        VerticalTextAlignment="Center"
                        HorizontalTextAlignment="Center"/>
                 <Label Text="Vertical (in.)" TextColor="Orange" FontSize="12" FontAttributes="Bold"
@@ -97,29 +97,20 @@
             </StackLayout>
         </Grid>
         
-        <!--Favorite Locations-->
-        <!--<StackLayout Orientation="Vertical" Grid.Row="2">
-            <StackLayout Orientation="Horizontal">
-                <Image Source ="tab_about.png"
-                   HeightRequest="75"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand"/>
-                <Image Source ="tab_about.png"
-                   HeightRequest="75"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand"/>
-                <Image Source ="tab_about.png"
-                   HeightRequest="75"
-                   HorizontalOptions="CenterAndExpand"
-                   VerticalOptions="CenterAndExpand"/>
+        
+        <StackLayout Orientation="Vertical" Grid.Row="2">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
+                <Button Text="Edit Profile" Command="{Binding EditProfile}"
+                        HeightRequest="25" WidthRequest="150" CornerRadius="10"
+                        HorizontalOptions="Center" Padding="0" BackgroundColor="Orange"/>
+                <Button Text="Create New Post" Command="{Binding CreatePost}"
+                        HeightRequest="25" WidthRequest="150" CornerRadius="10"
+                        HorizontalOptions="Center" Padding="0" BackgroundColor="Orange"/>
             </StackLayout>
-            <Label Text="Favorite Locations" TextColor="Orange" FontSize="14" FontAttributes="Bold"
-                   VerticalTextAlignment="Center"
-                   HorizontalTextAlignment="Center"/>
-        </StackLayout>-->
+        </StackLayout>
         
         <!--Posts-->
-        <ListView ItemsSource="{Binding profileFeed}" Grid.Row="2" HasUnevenRows="true" BackgroundColor="#f0fff0" SelectionMode="None">
+        <ListView ItemsSource="{Binding profileFeed}" Grid.Row="3" HasUnevenRows="true" BackgroundColor="#f0fff0" SelectionMode="None">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

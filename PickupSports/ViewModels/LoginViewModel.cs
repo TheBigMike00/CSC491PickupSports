@@ -10,9 +10,6 @@ namespace PickupSports.ViewModels
 {
     public class LoginViewModel : BaseViewModel
     {
-        public Command LoginCommand { get; }
-        public Command CreateAccountCommand { get; }
-
         public LoginViewModel()
         {
             LoginCommand = new Command(OnLoginClicked);
@@ -79,11 +76,10 @@ namespace PickupSports.ViewModels
                     string err = e.InnerException.Message;
                 }
             }
-
-
-            //Application.Current.MainPage = new AppShell();
-            //await Shell.Current.GoToAsync("//CommunityPage");
         }
+
+        public Command LoginCommand { get; }
+        public Command CreateAccountCommand { get; }
 
         //Login Fields
         string profileNameLoginVal;

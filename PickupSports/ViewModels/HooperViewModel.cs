@@ -93,60 +93,63 @@ namespace PickupSports.ViewModels
                 teamId = null;
             }
 
-            SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamName, members, wins, losses FROM Team WHERE teamID=@teamID", App.sqlcon);
-            sqlDataAdapter.SelectCommand.Parameters.AddWithValue("teamID", teamId);
-            DataTable dataTable = new DataTable();
-            sqlDataAdapter.Fill(dataTable);
-            teamName = dataTable.Rows[0]["teamName"].ToString();
-            members = dataTable.Rows[0]["members"].ToString() + " Members";
-            record = "Record: " + dataTable.Rows[0]["wins"].ToString() + "-" + dataTable.Rows[0]["losses"].ToString();
-
-
-            sqlda = new SqlDataAdapter("SELECT * FROM Game WHERE team1ID=@team1ID OR team2ID=@team2ID ORDER BY date DESC", App.sqlcon);
-            sqlda.SelectCommand.Parameters.AddWithValue("team1ID", teamId);
-            sqlda.SelectCommand.Parameters.AddWithValue("team2ID", teamId);
-            dtbl = new DataTable();
-            sqlda.Fill(dtbl);
-
-
-            for(int i = 0; i<dtbl.Rows.Count; i++)
+            if(teamId != null)
             {
-                SqlDataAdapter sqlda1 = new SqlDataAdapter("SELECT teamName FROM Team WHERE teamID=@teamID", App.sqlcon);
-                sqlda1.SelectCommand.Parameters.AddWithValue("teamID", dtbl.Rows[i]["team1ID"].ToString());
-                DataTable dtbl1 = new DataTable();
-                sqlda1.Fill(dtbl1);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamName, members, wins, losses FROM Team WHERE teamID=@teamID", App.sqlcon);
+                sqlDataAdapter.SelectCommand.Parameters.AddWithValue("teamID", teamId);
+                DataTable dataTable = new DataTable();
+                sqlDataAdapter.Fill(dataTable);
+                teamName = dataTable.Rows[0]["teamName"].ToString();
+                members = dataTable.Rows[0]["members"].ToString() + " Members";
+                record = "Record: " + dataTable.Rows[0]["wins"].ToString() + "-" + dataTable.Rows[0]["losses"].ToString();
 
-                SqlDataAdapter sqlda2 = new SqlDataAdapter("SELECT teamName FROM Team WHERE teamID=@teamID", App.sqlcon);
-                sqlda2.SelectCommand.Parameters.AddWithValue("teamID", dtbl.Rows[i]["team2ID"].ToString());
-                DataTable dtbl2 = new DataTable();
-                sqlda2.Fill(dtbl2);
 
-                string gameOutcome;
-                int t1 = Convert.ToInt32(dtbl.Rows[i]["team1Score"].ToString());
-                int t2 = Convert.ToInt32(dtbl.Rows[i]["team2Score"].ToString());
-                if ((teamId == Guid.Parse(dtbl.Rows[i]["team1ID"].ToString()) && t1 > t2) || (teamId == Guid.Parse(dtbl.Rows[i]["team2ID"].ToString()) && t2 > t1))
-                {
-                    gameOutcome = "VICTORY";
-                }
-                else if(t1 == t2)
-                {
-                    gameOutcome = "DRAW";
-                }
-                else
-                {
-                    gameOutcome = "LOSS";
-                }
+                sqlda = new SqlDataAdapter("SELECT * FROM Game WHERE team1ID=@team1ID OR team2ID=@team2ID ORDER BY date DESC", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("team1ID", teamId);
+                sqlda.SelectCommand.Parameters.AddWithValue("team2ID", teamId);
+                dtbl = new DataTable();
+                sqlda.Fill(dtbl);
 
-                game.Add(new Game()
+
+                for (int i = 0; i < dtbl.Rows.Count; i++)
                 {
-                    timeDate = formatTime(Convert.ToInt32(dtbl.Rows[i]["time"].ToString())) + " " + formatDate(dtbl.Rows[i]["date"].ToString()),
-                    gameLocation = dtbl.Rows[i]["location"].ToString(),
-                    team1Name = dtbl1.Rows[0]["teamName"].ToString(),
-                    team2Name = dtbl2.Rows[0]["teamName"].ToString(),
-                    team1Score = t1,
-                    team2Score = t2,
-                    outcome = gameOutcome
-                });
+                    SqlDataAdapter sqlda1 = new SqlDataAdapter("SELECT teamName FROM Team WHERE teamID=@teamID", App.sqlcon);
+                    sqlda1.SelectCommand.Parameters.AddWithValue("teamID", dtbl.Rows[i]["team1ID"].ToString());
+                    DataTable dtbl1 = new DataTable();
+                    sqlda1.Fill(dtbl1);
+
+                    SqlDataAdapter sqlda2 = new SqlDataAdapter("SELECT teamName FROM Team WHERE teamID=@teamID", App.sqlcon);
+                    sqlda2.SelectCommand.Parameters.AddWithValue("teamID", dtbl.Rows[i]["team2ID"].ToString());
+                    DataTable dtbl2 = new DataTable();
+                    sqlda2.Fill(dtbl2);
+
+                    string gameOutcome;
+                    int t1 = Convert.ToInt32(dtbl.Rows[i]["team1Score"].ToString());
+                    int t2 = Convert.ToInt32(dtbl.Rows[i]["team2Score"].ToString());
+                    if ((teamId == Guid.Parse(dtbl.Rows[i]["team1ID"].ToString()) && t1 > t2) || (teamId == Guid.Parse(dtbl.Rows[i]["team2ID"].ToString()) && t2 > t1))
+                    {
+                        gameOutcome = "VICTORY";
+                    }
+                    else if (t1 == t2)
+                    {
+                        gameOutcome = "DRAW";
+                    }
+                    else
+                    {
+                        gameOutcome = "LOSS";
+                    }
+
+                    game.Add(new Game()
+                    {
+                        timeDate = formatTime(Convert.ToInt32(dtbl.Rows[i]["time"].ToString())) + " " + formatDate(dtbl.Rows[i]["date"].ToString()),
+                        gameLocation = dtbl.Rows[i]["location"].ToString(),
+                        team1Name = dtbl1.Rows[0]["teamName"].ToString(),
+                        team2Name = dtbl2.Rows[0]["teamName"].ToString(),
+                        team1Score = t1,
+                        team2Score = t2,
+                        outcome = gameOutcome
+                    });
+                }
             }
             #endregion
 
