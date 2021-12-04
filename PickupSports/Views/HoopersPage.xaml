@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
             xmlns:local ="clr-namespace:PickupSports.ViewModels"
-             x:Class="PickupSports.Views.HoopersPage"
+            x:Class="PickupSports.Views.HoopersPage"
             BarBackgroundColor="#ffbf00"
             BarTextColor="White">
 
@@ -14,10 +15,16 @@
         <ToolbarItem Text="Basketball"/>
         <ToolbarItem Text=""/>
         <ToolbarItem Text=""/>
-        <ToolbarItem IconImageSource="tab_about.png"/>
+        <ToolbarItem >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="FAFS"
+                    Glyph="{StaticResource IconSettings}"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </TabbedPage.ToolbarItems>
 
-    <ContentPage Title="Friends" BackgroundColor="#f0fff0">
+    <ContentPage Title="Friends" BackgroundColor="#f0fff0" x:Name="FriendsPage">
 
         <Grid>
             <Grid.RowDefinitions>
@@ -30,10 +37,10 @@
             <StackLayout Orientation="Horizontal" Grid.Row="0" HorizontalOptions="CenterAndExpand">
                 <Label Text="Find Friend: " FontSize="14" TextColor="Black"
                    HorizontalOptions="Start" VerticalOptions="CenterAndExpand"/>
-                <Entry x:Name ="profileNameSearch" Placeholder="Enter Profile Name" TextColor="Gray"
+                <Entry x:Name ="profileNameSearch" Placeholder="Enter Profile Name" TextColor="Orange"
                    ClearButtonVisibility="WhileEditing" IsSpellCheckEnabled="False" Text="{Binding search}"
                    HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
-                <Button x:Name="profileNameSearchButton" Text="Search" BackgroundColor="Orange"
+                <Button x:Name="profileNameSearchButton" Text="Add Friend" BackgroundColor="Blue"
                     HeightRequest="35" CornerRadius="10" Command="{Binding SearchCommand}"
                     HorizontalOptions="StartAndExpand" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
@@ -45,7 +52,13 @@
                    HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>
             </StackLayout>
 
-            <ListView ItemsSource="{Binding friendList}" HasUnevenRows="true" Grid.Row="2">
+            <ListView ItemsSource="{Binding friendList}" HasUnevenRows="true" Grid.Row="2" SelectedItem="{Binding SelectedFriendship, Mode=TwoWay}">
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior
+                        EventName="ItemSelected"
+                        Command="{Binding ViewProfile}"
+                        CommandParameter="{Binding SelectedFriendship}"/>
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
@@ -57,9 +70,9 @@
                                 <!--<Button x:Name="messageFriendButton" Text="Message" BackgroundColor="Orange"
                                         HeightRequest="35" CornerRadius="10"
                                         HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand"/>-->
-                                <Button x:Name="removeFriendButton" Text="Remove" BackgroundColor="Red"
-                                        HeightRequest="35" CornerRadius="10" Command="{Binding RemoveFriendCommand}"
-                                        HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
+                                <Button x:Name="removeFriendButton" Text="Remove" BackgroundColor="Red" Padding="0" Margin="5,5,5,5"
+                                        HeightRequest="30" CornerRadius="10" Command="{Binding Source={x:Reference FriendsPage}, Path=BindingContext.RemoveFriendCommand}" 
+                                        CommandParameter="{Binding profileName}" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand"/>
                             </StackLayout>
                         </ViewCell>
                     </DataTemplate>
@@ -82,8 +95,8 @@
             </Grid.RowDefinitions>
 
             <StackLayout Orientation="Horizontal" Grid.Row="0" Padding="5">
-                <Image Source ="tab_about.png"
-                   HeightRequest="75"
+                <Image Source ="{Binding teamLogo}"
+                   HeightRequest="85"
                    HorizontalOptions="CenterAndExpand"
                    VerticalOptions="CenterAndExpand"/>
                 <StackLayout Orientation="Vertical" WidthRequest="300" Padding="5">
@@ -109,10 +122,14 @@
 
 
             <StackLayout Orientation="Vertical" Grid.Row="1">
-                <Button
-                x:Name = "editTeamDetails" Text = "Edit Team Details" BackgroundColor="Orange"
-                WidthRequest="250" HeightRequest="35" CornerRadius="10" Command="{Binding EditTeamDetails}"
-                VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                <StackLayout Orientation="Horizontal">
+                    <Button x:Name = "recordGame" Text = "Add Game Result" BackgroundColor="Orange" Padding="0"
+                        HeightRequest="30" WidthRequest="175" CornerRadius="10" Command="{Binding AddGame}"
+                        VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                    <Button x:Name = "editTeamDetails" Text = "Edit Team Details" BackgroundColor="Orange" Padding="0"
+                        HeightRequest="30" WidthRequest="175" CornerRadius="10" Command="{Binding EditTeamDetails}"
+                        VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                </StackLayout>
                 <Label Padding="10" Text="Recent Games" FontSize="24" TextColor="Orange" FontAttributes="Bold"
                                     HorizontalOptions="CenterAndExpand"/>
             </StackLayout>
@@ -120,7 +137,7 @@
 
 
 
-            <ListView ItemsSource="{Binding game}" HasUnevenRows="true" Grid.Row="2">
+            <ListView ItemsSource="{Binding game}" HasUnevenRows="true" Grid.Row="2" SelectionMode="None">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>

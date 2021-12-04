@@ -14,7 +14,13 @@
         <ToolbarItem Text="Basketball"/>
         <ToolbarItem Text=""/>
         <ToolbarItem Text=""/>
-        <ToolbarItem IconImageSource="tab_about.png"/>
+        <ToolbarItem >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="FAFS"
+                    Glyph="{StaticResource IconSettings}"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <Grid>
@@ -100,10 +106,10 @@
         
         <StackLayout Orientation="Vertical" Grid.Row="2">
             <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Button Text="Edit Profile" Command="{Binding EditProfile}"
+                <Button Text="Create New Post" Command="{Binding CreatePost}"
                         HeightRequest="25" WidthRequest="150" CornerRadius="10"
                         HorizontalOptions="Center" Padding="0" BackgroundColor="Orange"/>
-                <Button Text="Create New Post" Command="{Binding CreatePost}"
+                <Button Text="Edit Profile" Command="{Binding EditProfile}"
                         HeightRequest="25" WidthRequest="150" CornerRadius="10"
                         HorizontalOptions="Center" Padding="0" BackgroundColor="Orange"/>
             </StackLayout>

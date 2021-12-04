@@ -39,22 +39,14 @@ namespace PickupSports.ViewModels
                 });
             }
             App.sqlcon.Close();
-            try
-            {
-                ViewProfile = new AsyncCommand<object>(ViewProfileComm);
-            }
-            catch (Exception e)
-            {
-                string error = e.ToString();
-            }
             
+            ViewProfile = new AsyncCommand<object>(ViewProfileComm);
         }
 
         async Task ViewProfileComm(object args)
         {
             try
             {
-                string output = args.ToString();
                 SelectedPost = args as CommunityFeed;
                 if (App.sqlcon.State == ConnectionState.Closed)
                     App.sqlcon.Open();
@@ -77,24 +69,7 @@ namespace PickupSports.ViewModels
             {
                 string error = e.ToString();
             }
-
             return;
-            //var commFeed = args as CommunityFeed;
-            //if (App.sqlcon.State == ConnectionState.Closed)
-            //    App.sqlcon.Open();
-
-            //SqlDataAdapter sqlda = new SqlDataAdapter("SELECT playerID FROM Player WHERE playerName=@playerName", App.sqlcon);
-            //sqlda.SelectCommand.Parameters.AddWithValue("playerName", commFeed.profileNameVal);
-            //DataTable dtbl = new DataTable();
-            //sqlda.Fill(dtbl);
-            //App.tempPlayerID = Guid.Parse(dtbl.Rows[0]["playerID"].ToString());
-            //App.sqlcon.Close();
-
-            //var viewProfileVM = new ViewProfileViewModel();
-            //var viewProfilePage = new ViewProfilePage();
-
-            //viewProfilePage.BindingContext = viewProfileVM;
-            //await App.Current.MainPage.Navigation.PushModalAsync(viewProfilePage);
         }
 
         public List<CommunityFeed> postFeed { get; set; }

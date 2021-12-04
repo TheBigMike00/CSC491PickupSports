@@ -8,6 +8,13 @@
     <Application.Resources>
         <ResourceDictionary>
             <Color x:Key="Primary">#2196F3</Color>
+
+            <x:String x:Key="IconUser">&#xf007;</x:String>
+            <x:String x:Key="IconLocation">&#xf3c5;</x:String>
+            <x:String x:Key="IconHoopers">&#xf434;</x:String>
+            <x:String x:Key="IconCommunity">&#xf0c0;</x:String>
+            <x:String x:Key="IconSettings">&#xf013;</x:String>
+            
             <Style TargetType="Button">
                 <Setter Property="TextColor" Value="White"></Setter>
                 <Setter Property="VisualStateManager.VisualStateGroups">

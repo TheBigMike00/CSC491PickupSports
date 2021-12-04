@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using PickupSports.Models;
 using System.Collections.ObjectModel;
+using Xamarin.CommunityToolkit.ObjectModel;
+using PickupSports.Views;
 
 namespace PickupSports.ViewModels
 {
@@ -15,13 +17,40 @@ namespace PickupSports.ViewModels
     {
         public HooperViewModel()
         {
-            friendList = new List<FriendList>();
+            friendList = new ObservableCollection<FriendList>();
             game = new List<Game>();
-            if (App.sqlcon.State == ConnectionState.Closed)
-                App.sqlcon.Open();
 
             //Load Data for Friends Page
-            #region InitializeFriendsPage
+            LoadFriendData();
+
+            //Load Data for Teams Page
+            LoadTeamData();
+
+
+            ViewProfile = new AsyncCommand<object>(ViewProfileComm);
+
+            SearchCommand = new Command(addFriend);
+
+            RemoveFriendCommand = new Command<string>(removeFriend);
+
+            EditTeamDetails = new Command(() =>
+            {
+
+            });
+
+            AddGame = new Command(() =>
+            {
+
+            });
+        }
+
+        //Friends Content Page
+        #region Friends
+
+        void LoadFriendData()
+        {
+            if (App.sqlcon.State == ConnectionState.Closed)
+                App.sqlcon.Open();
             SqlDataAdapter sqlda = new SqlDataAdapter("SELECT player1ID, player2ID FROM Friendship WHERE player1ID=@player1ID OR player2ID=@player2ID", App.sqlcon);
             sqlda.SelectCommand.Parameters.AddWithValue("player1ID", App.playerID);
             sqlda.SelectCommand.Parameters.AddWithValue("player2ID", App.playerID);
@@ -72,36 +101,174 @@ namespace PickupSports.ViewModels
                 }
             }
             numFriends = friendList.Count;
-            #endregion
+            App.sqlcon.Close();
+        }
+
+        string searchVal;
+        public string search { get => searchVal; set => SetProperty(ref searchVal, value); }
+
+        int numFriendsVal;
+        public int numFriends { get => numFriendsVal; set => SetProperty(ref numFriendsVal, value); }
+
+        public ObservableCollection<FriendList> friendList { get; set; }
+
+        FriendList SelectedFriendshipVal;
+        public FriendList SelectedFriendship { get => SelectedFriendshipVal; set => SetProperty(ref SelectedFriendshipVal, value); }
+
+        public AsyncCommand<object> ViewProfile { get; }
+
+        public Command SearchCommand { get; }
+
+        public Command <string> RemoveFriendCommand { get; }
+
+        async Task ViewProfileComm(object args)
+        {
+            try
+            {
+                SelectedFriendship = args as FriendList;
+                if (App.sqlcon.State == ConnectionState.Closed)
+                    App.sqlcon.Open();
+
+                SqlDataAdapter sqlda = new SqlDataAdapter("SELECT playerID FROM Player WHERE profileName=@profileName", App.sqlcon);
+                sqlda.SelectCommand.Parameters.AddWithValue("profileName", SelectedFriendship.profileName);
+                DataTable dtbl = new DataTable();
+                sqlda.Fill(dtbl);
+                App.tempPlayerID = Guid.Parse(dtbl.Rows[0]["playerID"].ToString());
+                App.sqlcon.Close();
+                SelectedFriendship = null;
+
+                var viewProfileVM = new ViewProfileViewModel();
+                var viewProfilePage = new ViewProfilePage();
+
+                viewProfilePage.BindingContext = viewProfileVM;
+                await App.Current.MainPage.Navigation.PushModalAsync(viewProfilePage);
+            }
+            catch (Exception e)
+            {
+                string error = e.ToString();
+            }
+            return;
+        }
+
+        void removeFriend(string profileName)
+        {
+            if (App.sqlcon.State == ConnectionState.Closed)
+                App.sqlcon.Open();
+
+            SqlDataAdapter sqlda = new SqlDataAdapter("SELECT playerID FROM Player WHERE profileName=@profileName", App.sqlcon);
+            sqlda.SelectCommand.Parameters.AddWithValue("profileName", profileName);
+            DataTable dtbl = new DataTable();
+            sqlda.Fill(dtbl);
+
+            var sqlda2 = new SqlCommand("DELETE FROM Friendship WHERE (player1ID=@otherID OR player2ID=@otherID) AND (player1ID=@playerID OR player2ID=@playerID)", App.sqlcon);
+            sqlda2.Parameters.AddWithValue("otherID", Guid.Parse(dtbl.Rows[0]["playerID"].ToString()));
+            sqlda2.Parameters.AddWithValue("playerID", App.playerID);
+            sqlda2.ExecuteNonQuery();
+
+            friendList.Clear();
+            LoadFriendData();
+
+            App.sqlcon.Close();
+
+        }
+
+        async void addFriend()
+        {
+            if(search != null)
+            {
+                bool inList = false;
+                for(int i =0; i<friendList.Count; i++)
+                {
+                    if (friendList[i].profileName == search)
+                    {
+                        inList = true;
+                        break;
+                    }
+                }
+
+                if(!inList)
+                {
+                    try
+                    {
+                        if (App.sqlcon.State == ConnectionState.Closed)
+                            App.sqlcon.Open();
+
+                        SqlDataAdapter sqlda = new SqlDataAdapter("SELECT playerID FROM Player WHERE profileName=@profileName", App.sqlcon);
+                        sqlda.SelectCommand.Parameters.AddWithValue("profileName", search);
+                        DataTable dtbl = new DataTable();
+                        sqlda.Fill(dtbl);
+
+                        var sqlda2 = new SqlCommand("INSERT INTO Friendship (friendshipID, player1ID, player2ID) VALUES (@friendshipID, @player1ID, @player2ID)", App.sqlcon);
+                        sqlda2.Parameters.AddWithValue("friendshipID", Guid.NewGuid());
+                        sqlda2.Parameters.AddWithValue("player1ID", App.playerID);
+                        sqlda2.Parameters.AddWithValue("player2ID", Guid.Parse(dtbl.Rows[0]["playerID"].ToString()));
+                        sqlda2.ExecuteNonQuery();
+
+                        friendList.Clear();
+                        LoadFriendData();
+
+                        App.sqlcon.Close();
+                    }
+                    catch (Exception e)
+                    {
+                        string error = e.ToString();
+                        await App.Current.MainPage.DisplayAlert("Error", "Check Your Spelling!\n\nNo profile found with provided name.", "OK");
+                    }
+                }
+                else
+                {
+                    await App.Current.MainPage.DisplayAlert("Error", "This player is already in your friends list.", "OK");
+                }
+            }
+            else
+            {
+                await App.Current.MainPage.DisplayAlert("Error", "Please enter the profile name of the friend you with to add.", "OK");
+            }
+        }
+        #endregion
 
 
-            //Load Data for Teams Page
-            #region InitializeTeamsPage
-            sqlda = new SqlDataAdapter("SELECT teamID FROM Player WHERE playerID=@playerID", App.sqlcon);
+        //Teams Content Page
+        #region Teams
+        void LoadTeamData()
+        {
+            if (App.sqlcon.State == ConnectionState.Closed)
+                App.sqlcon.Open();
+
+            SqlDataAdapter sqlda = new SqlDataAdapter("SELECT teamID FROM Player WHERE playerID=@playerID", App.sqlcon);
             sqlda.SelectCommand.Parameters.AddWithValue("playerID", App.playerID);
-            dtbl = new DataTable();
+            DataTable dtbl = new DataTable();
             sqlda.Fill(dtbl);
 
             Guid? teamId;
-            try 
+            try
             {
                 teamId = Guid.Parse(dtbl.Rows[0]["teamID"].ToString());
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 string error = e.ToString();
                 teamId = null;
             }
 
-            if(teamId != null)
+            if (teamId != null)
             {
-                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamName, members, wins, losses FROM Team WHERE teamID=@teamID", App.sqlcon);
+                SqlDataAdapter sqlDataAdapter = new SqlDataAdapter("SELECT teamName, members, wins, losses, teamLogo FROM Team WHERE teamID=@teamID", App.sqlcon);
                 sqlDataAdapter.SelectCommand.Parameters.AddWithValue("teamID", teamId);
                 DataTable dataTable = new DataTable();
                 sqlDataAdapter.Fill(dataTable);
                 teamName = dataTable.Rows[0]["teamName"].ToString();
                 members = dataTable.Rows[0]["members"].ToString() + " Members";
                 record = "Record: " + dataTable.Rows[0]["wins"].ToString() + "-" + dataTable.Rows[0]["losses"].ToString();
+                string logo = dataTable.Rows[0]["teamLogo"].ToString();
+                if(logo != null)
+                {
+                    teamLogo = logo;
+                }
+                else
+                {
+                    //null team logo
+                }
 
 
                 sqlda = new SqlDataAdapter("SELECT * FROM Game WHERE team1ID=@team1ID OR team2ID=@team2ID ORDER BY date DESC", App.sqlcon);
@@ -151,46 +318,9 @@ namespace PickupSports.ViewModels
                     });
                 }
             }
-            #endregion
-
             App.sqlcon.Close();
-
-
-            SearchCommand = new Command(() =>
-            {
-
-            });
-
-            RemoveFriendCommand = new Command(() =>
-            {
-
-            });
-
-            EditTeamDetails = new Command(() =>
-            {
-
-            });
         }
 
-        //Friends Content Page
-        #region Friends
-
-        string searchVal;
-        public string search { set => SetProperty(ref searchVal, value); }
-
-        int numFriendsVal;
-        public int numFriends { get => numFriendsVal; set => SetProperty(ref numFriendsVal, value); }
-
-        public List<FriendList> friendList { get; set; }
-
-        public Command SearchCommand { get; }
-
-        public Command RemoveFriendCommand { get; }
-        #endregion
-
-
-        //Teams Content Page
-        #region Teams
         string teamNameVal;
         public string teamName { get => teamNameVal; set => SetProperty(ref teamNameVal, value); }
 
@@ -199,6 +329,9 @@ namespace PickupSports.ViewModels
 
         string recordVal;
         public string record { get => recordVal; set => SetProperty(ref recordVal, value); }
+
+        string teamLogoVal;
+        public string teamLogo { get => teamLogoVal; set => SetProperty(ref teamLogoVal, value); }
 
         public List<Game> game {get; set; }
 
@@ -254,6 +387,7 @@ namespace PickupSports.ViewModels
             return dateToReturn;
         }
 
+        public Command AddGame { get; }
 
         public Command EditTeamDetails { get; }
         #endregion

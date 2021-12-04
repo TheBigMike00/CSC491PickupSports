@@ -8,7 +8,13 @@
         <ToolbarItem Text="Basketball"/>
         <ToolbarItem Text=""/>
         <ToolbarItem Text=""/>
-        <ToolbarItem IconImageSource="tab_about.png"/>
+        <ToolbarItem >
+            <ToolbarItem.IconImageSource>
+                <FontImageSource
+                    FontFamily="FAFS"
+                    Glyph="{StaticResource IconSettings}"/>
+            </ToolbarItem.IconImageSource>
+        </ToolbarItem>
     </ContentPage.ToolbarItems>
 
     <StackLayout>

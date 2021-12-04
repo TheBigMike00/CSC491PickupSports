@@ -30,10 +30,26 @@
     </Shell.Resources>
 
     <TabBar>
-        <ShellContent Title="Community" Icon="tab_about.png" Route="CommunityPage" ContentTemplate="{DataTemplate local:CommunityPage}" />
-        <ShellContent Title="Hoopers" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:HoopersPage}" />
-        <ShellContent Title="Locations" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:LocationPage}" />
-        <ShellContent Title="Profile" Icon="tab_feed.png" ContentTemplate="{DataTemplate local:ProfilePage}" />
+        <ShellContent Title="Community" Route="CommunityPage" ContentTemplate="{DataTemplate local:CommunityPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFS" Glyph="{StaticResource IconCommunity}"/>
+            </ShellContent.Icon>
+        </ShellContent>
+            <ShellContent Title="Hoopers" ContentTemplate="{DataTemplate local:HoopersPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFS" Glyph="{StaticResource IconHoopers}"/>
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Locations" ContentTemplate="{DataTemplate local:LocationPage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFS" Glyph="{StaticResource IconLocation}"/>
+            </ShellContent.Icon>
+        </ShellContent>
+        <ShellContent Title="Profile" ContentTemplate="{DataTemplate local:ProfilePage}">
+            <ShellContent.Icon>
+                <FontImageSource FontFamily="FAFS" Glyph="{StaticResource IconUser}"/>
+            </ShellContent.Icon>
+        </ShellContent>
     </TabBar>
 
     <!--
