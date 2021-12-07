@@ -124,11 +124,11 @@
             <StackLayout Orientation="Vertical" Grid.Row="1">
                 <StackLayout Orientation="Horizontal">
                     <Button x:Name = "recordGame" Text = "Add Game Result" BackgroundColor="Orange" Padding="0"
-                        HeightRequest="30" WidthRequest="175" CornerRadius="10" Command="{Binding AddGame}"
+                        HeightRequest="30" WidthRequest="250" CornerRadius="10" Command="{Binding AddGame}"
                         VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
-                    <Button x:Name = "editTeamDetails" Text = "Edit Team Details" BackgroundColor="Orange" Padding="0"
+                    <!--<Button x:Name = "editTeamDetails" Text = "Edit Team Details" BackgroundColor="Orange" Padding="0"
                         HeightRequest="30" WidthRequest="175" CornerRadius="10" Command="{Binding EditTeamDetails}"
-                        VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+                        VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>-->
                 </StackLayout>
                 <Label Padding="10" Text="Recent Games" FontSize="24" TextColor="Orange" FontAttributes="Bold"
                                     HorizontalOptions="CenterAndExpand"/>

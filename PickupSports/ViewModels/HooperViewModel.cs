@@ -18,7 +18,7 @@ namespace PickupSports.ViewModels
         public HooperViewModel()
         {
             friendList = new ObservableCollection<FriendList>();
-            game = new List<Game>();
+            game = new ObservableCollection<Game>();
 
             //Load Data for Friends Page
             LoadFriendData();
@@ -38,9 +38,13 @@ namespace PickupSports.ViewModels
 
             });
 
-            AddGame = new Command(() =>
+            AddGame = new Command(async () =>
             {
+                var addGameVM = new AddGameViewModel(this);
+                var addGamePage = new AddGamePage();
 
+                addGamePage.BindingContext = addGameVM;
+                await App.Current.MainPage.Navigation.PushModalAsync(addGamePage);
             });
         }
 
@@ -230,7 +234,7 @@ namespace PickupSports.ViewModels
 
         //Teams Content Page
         #region Teams
-        void LoadTeamData()
+        public void LoadTeamData()
         {
             if (App.sqlcon.State == ConnectionState.Closed)
                 App.sqlcon.Open();
@@ -333,7 +337,7 @@ namespace PickupSports.ViewModels
         string teamLogoVal;
         public string teamLogo { get => teamLogoVal; set => SetProperty(ref teamLogoVal, value); }
 
-        public List<Game> game {get; set; }
+        public ObservableCollection<Game> game {get; set; }
 
         private string formatTime(int mins)
         {
